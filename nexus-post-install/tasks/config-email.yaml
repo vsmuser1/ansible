@@ -1,0 +1,22 @@
+- name: "Config Nexus email settings"
+  uri:
+    method: "PUT"
+    url: "https://artifacts.{{ dns_subdomain }}/service/rest/v1/email"
+    user: "{{ nexus_admin_username }}"
+    password: "{{ nexus_admin_password }}"
+    force_basic_auth: yes
+    body_format: "json"
+    body:
+      enabled: true
+      host: "localhost"
+      port: 25
+      username: ""
+      password: null
+      fromAddress: "{{ nexus_admin_email }}"
+      subjectPrefix: "{{ nexus_admin_email_subject_prefix }}"
+      startTlsEnabled: false
+      startTlsRequired: false
+      sslOnConnectEnabled: false
+      sslServerIdentityCheckEnabled: false
+      nexusTrustStoreEnabled: false
+    status_code: 204

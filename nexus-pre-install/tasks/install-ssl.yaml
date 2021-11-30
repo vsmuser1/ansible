@@ -1,0 +1,24 @@
+- name: "Create SSL directory: {{ home_directory }}/sonatype-work/ssl"
+  ansible.builtin.file:
+    path: "{{ home_directory }}/sonatype-work/ssl"
+    state: "directory"
+    group: "{{ local_group }}"
+    owner: "{{ local_account }}"
+
+- name: "Copy SSL certificate chain file"
+  copy:
+    content: "{{ ssl_cert_chain }}"
+    dest: "{{ home_directory }}/sonatype-work/ssl/{{ ssl_cert_chain_file_name }}"
+    group: "root"
+    owner: "root"
+    # mode: 0440
+    mode: "u=r,g=r,o="
+
+- name: "Copy SSL certificate key"
+  copy:
+    content: "{{ ssl_cert_key }}"
+    dest: "{{ home_directory }}/sonatype-work/ssl/{{ ssl_cert_key_file_name }}"
+    group: "root"
+    owner: "root"
+    # mode: 0440
+    mode: "u=r,g=r,o="

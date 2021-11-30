@@ -1,0 +1,30 @@
+---
+# Nexus OSS - Installation
+
+- hosts: "nexus"
+  become: yes
+  gather_facts: true
+  vars_files:
+    - "../vault/{{ env }}/secrets.yaml"
+  tasks:
+    - name: "Print environment being provisioned"
+      ansible.builtin.debug:
+        msg:
+          - "ENVIRONMENT: {{ env }}"
+    - name: "Display all variables/facts known for a host"
+      ansible.builtin.debug:
+        var: hostvars[inventory_hostname]
+        verbosity: 4
+    - name: "Nexus OSS - Pre-installation"
+      import_role:
+        name: "nexus-pre-install"
+    - name: "Nexus OSS - Installation"
+      import_role:
+        name: "nexus-install"
+    - name: "Nexus OSS - Post-installation"
+      import_role:
+        name: "nexus-post-install"
+    - name: "Nexus OSS - API"
+      import_role:
+        name: "nexus-api"
+

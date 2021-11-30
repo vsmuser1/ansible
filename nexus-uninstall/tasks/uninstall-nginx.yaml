@@ -1,0 +1,10 @@
+- name: "Stop NGINX service"
+  ansible.builtin.systemd:
+    name: "nginx"
+    state: "stopped"
+  ignore_errors: yes
+
+- name: "Remove the installed version of NGINX"
+  dnf:
+    name: "nginx"
+    state: "absent"

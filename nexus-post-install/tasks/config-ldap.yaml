@@ -1,0 +1,42 @@
+#TODO: add SSL cert to Nexus truststore for LDAPs
+
+- name: "Config LDAP settings"
+  uri:
+    method: "POST"
+    url: "https://artifacts.{{ dns_subdomain }}/service/rest/v1/security/ldap"
+    user: "{{ nexus_admin_username }}"
+    password: "{{ nexus_admin_password }}"
+    force_basic_auth: yes
+    body_format: "json"
+    body:
+      name: "{{ nexus_ldap_config_name }}"
+      protocol: "{{ nexus_ldap_config_protocol }}"
+      useTrustStore: false
+      host: "{{ nexus_ldap_config_host }}"
+      port: "{{ nexus_ldap_config_port }}"
+      searchBase: "{{ nexus_ldap_config_searchBase }}"
+      authScheme: "SIMPLE"
+      authRealm: ""
+      authUsername: "{{ nexus_ldap_config_authUsername }}"
+      authPassword: "{{ nexus_ldap_config_authPassword }}"
+      connectionTimeoutSeconds: 30
+      connectionRetryDelaySeconds: 300
+      maxIncidentsCount: 3
+      userBaseDn: ""
+      userSubtree: true
+      userObjectClass: "user"
+      userLdapFilter: "{{ nexus_ldap_config_userLdapFilter }}"
+      userIdAttribute: "sAMAccountName"
+      userRealNameAttribute: "cn"
+      userEmailAddressAttribute: "mail"
+      userPasswordAttribute: ""
+      ldapGroupsAsRoles: true
+      groupType: "DYNAMIC"
+      groupBaseDn: null
+      groupSubtree: false
+      groupObjectClass: null
+      groupIdAttribute: null
+      groupMemberAttribute: null
+      groupMemberFormat: null
+      userMemberOfAttribute: "memberOf"
+    status_code: 201

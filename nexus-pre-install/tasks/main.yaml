@@ -1,0 +1,29 @@
+---
+
+- name: "Create local service account"
+  include_tasks:
+    file: "create-local-service-account.yaml"
+    apply:
+      tags:
+        - "pre-install"
+
+- name: "Install Java Development Kit (OpenJDK)"
+  include_tasks:
+    file: "install-jdk.yaml"
+    apply:
+      tags:
+        - "pre-install"
+
+- name: "Install SSL certificates"
+  include_tasks:
+    file: "install-ssl.yaml"
+    apply:
+      tags:
+        - "pre-install"
+
+- name: "Install & configure NGINX reverse proxy"
+  include_tasks:
+    file: "install-nginx.yaml"
+    apply:
+      tags:
+        - "pre-install"

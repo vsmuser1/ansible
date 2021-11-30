@@ -1,0 +1,20 @@
+{
+  "name": "{{ item.name }}",
+  "online": true,
+  "storage": {
+    "blobStoreName": "{{ item.blobStore|default('default') }}",
+    "strictContentTypeValidation": true,
+    "writePolicy": "allow_once"
+  },
+  "cleanup": {
+    "policyNames": [
+      "{{ item.policy|default('string') }}"
+    ]
+  },
+  "component": {
+    "proprietaryComponents": true
+  },
+  "raw": {
+    "contentDisposition": "ATTACHMENT"
+  }
+}

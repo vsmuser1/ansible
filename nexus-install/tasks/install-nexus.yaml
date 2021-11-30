@@ -1,0 +1,54 @@
+#- name: "Perform Internet installation"
+#  block:
+- name: "Download Nexus RM version: {{ nexus_version }}"
+  get_url:
+    url: "https://download.sonatype.com/nexus/3/nexus-{{ nexus_version }}-unix.tar.gz"
+    dest: "{{ home_directory }}"
+    checksum: "md5:{{ nexus_version_md5sum }}"
+#  when: airgapped != yes
+
+#- name: "Perform Air-gapped installation"
+#  block:
+#- name: "Download Nexus RM version: {{ nexus_version }}"
+#  copy:
+#    src: "nexus-{{ nexus_version }}-unix.tar.gz"
+#    dest: "{{ home_directory }}"
+#  when: airgapped == yes
+
+- name: "Unarchive Nexus TAR GZip file: {{ home_directory }}/nexus-{{ nexus_version }}-unix.tar.gz"
+  unarchive:
+    src: "{{ home_directory }}/nexus-{{ nexus_version }}-unix.tar.gz"
+    dest: "{{ home_directory }}"
+    remote_src: yes
+
+- name: "Delete Nexus TAR GZip file: {{ home_directory }}/nexus-{{ nexus_version }}-unix.tar.gz"
+  ansible.builtin.file:
+    path: "{{ home_directory }}/nexus-{{ nexus_version }}-unix.tar.gz"
+    state: "absent"
+
+- name: "Create symlink: {{ home_directory }}/{{ application_name }} -> {{ home_directory }}/nexus-{{ nexus_version }}"
+  ansible.builtin.file:
+    src: "{{ home_directory }}/nexus-{{ nexus_version }}"
+    dest: "{{ home_directory }}/nexus"
+    state: "link"
+
+- name: "Create empty backup directory: {{ home_directory }}/sonatype-work/nexus3/backups/databases"
+  ansible.builtin.file:
+    path: "{{ home_directory }}/sonatype-work/nexus3/backups/databases"
+    state: "directory"
+
+- name: "Change ownership for directory: {{ home_directory }}"
+  ansible.builtin.file:
+    path: "{{ home_directory }}"
+    state: "directory"
+    recurse: yes
+    group: "{{ local_group }}"
+    owner: "{{ local_account }}"
+
+- name: "Change ownership for directory: {{ home_directory }}/sonatype-work/ssl"
+  ansible.builtin.file:
+    path: "{{ home_directory }}/sonatype-work/ssl"
+    state: "directory"
+    recurse: yes
+    group: "root"
+    owner: "root"

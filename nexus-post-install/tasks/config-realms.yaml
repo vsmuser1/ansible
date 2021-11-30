@@ -1,0 +1,15 @@
+- name: "Config Nexus realms"
+  uri:
+    method: "PUT"
+    url: "https://artifacts.{{ dns_subdomain }}/service/rest/v1/security/realms/active"
+    user: "{{ nexus_admin_username }}"
+    password: "{{ nexus_admin_password }}"
+    force_basic_auth: yes
+    body_format: "json"
+    body:
+      - "NexusAuthenticatingRealm"
+      - "NexusAuthorizingRealm"
+      - "LdapRealm"
+      - "DockerToken"
+      - "NpmToken"
+    status_code: 204

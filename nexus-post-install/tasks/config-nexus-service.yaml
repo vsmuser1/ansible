@@ -1,0 +1,33 @@
+- name: "Copy Nexus service config file: {{ application_name }}.service"
+  template:
+    src: "{{ application_name }}.service.j2"
+    dest: "{{ home_directory }}/sonatype-work/{{ application_name }}.service"
+    group: "{{ local_group }}"
+    owner: "{{ local_account }}"
+    # mode: 0440
+    mode: "u=r,g=r,o="
+
+- name: "Copy Nexus service config to systemd"
+  ansible.builtin.copy:
+    src: "{{ home_directory }}/sonatype-work/{{ application_name }}.service"
+    dest: "/etc/systemd/system/{{ application_name }}.service"
+    group: "{{ local_group }}"
+    owner: "{{ local_account }}"
+    # mode: 0440
+    mode: "u=r,g=r,o="
+
+- name: "Start Nexus service"
+  ansible.builtin.systemd:
+    name: "nexus"
+    state: "restarted"
+    daemon_reload: yes
+    enabled: yes
+
+- name: "Confirm that 200 OK response is returned"
+  uri:
+    method: "GET"
+    url: "http://localhost:8081/"
+  register: "_result"
+  until: "_result.status == 200"
+  delay: 5 # seconds
+  retries: 12 # 12 * 5 seconds = 60 seconds

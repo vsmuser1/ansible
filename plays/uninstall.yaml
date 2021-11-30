@@ -1,0 +1,18 @@
+---
+# Nexus OSS - Un-installation
+
+- hosts: "nexus"
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: "Print environment being provisioned"
+      ansible.builtin.debug:
+        msg:
+          - "ENVIRONMENT: {{ env }}"
+    - name: "Display all variables/facts known for a host"
+      ansible.builtin.debug:
+        var: hostvars[inventory_hostname]
+        verbosity: 4
+    - name: "Nexus OSS - Un-installation"
+      import_role:
+        name: "nexus-uninstall"

@@ -1,0 +1,40 @@
+- name: "Stop Nexus service"
+  ansible.builtin.systemd:
+    name: "nexus"
+    state: "stopped"
+  ignore_errors: yes
+
+- name: "Confirm that 200 OK response is *not* returned"
+  uri:
+    url: "http://localhost:8081/"
+    status_code: -1
+  register: "_result"
+  until: "_result.status != 200"
+  delay: 5 # seconds
+  retries: 12 # 12 * 5 seconds = 60 seconds
+
+- name: "Remove files/directories: {{ home_directory }}/nexus*"
+  file:
+    path: "{{ item }}"
+    state: "absent"
+  with_items:
+    - "{{ home_directory }}/nexus"
+    - "{{ home_directory }}/nexus-{{ nexus_version }}"
+    - "{{ home_directory }}/sonatype-work/ssl"
+
+- name: "Clear Nexus data backup directory: {{ home_directory }}/sonatype-work-backup"
+  ansible.builtin.file:
+    path: "{{ home_directory }}/sonatype-work-backup"
+    state: "absent"
+
+- name: "Stat Nexus data directory"
+  stat:
+    path: "{{ home_directory }}/sonatype-work"
+  register: "nexus_data_directory"
+
+- name: "Backup Nexus data directory: {{ home_directory }}/sonatype-work-backup"
+  command: "mv {{ home_directory }}/sonatype-work {{ home_directory }}/sonatype-work-backup"
+  args:
+    removes: "{{ home_directory }}/sonatype-work"
+    creates: "{{ home_directory }}/sonatype-work-backup"
+  when: "nexus_data_directory.stat.exists"

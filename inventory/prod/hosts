@@ -1,0 +1,30 @@
+[nexus]
+192.168.162.52
+#failover: 192.168.174.52
+
+[nexus:vars]
+env="prod"
+application_name="nexus"
+support_group="%pr-brm-admin"
+local_account="brm.svc"
+local_account_uid="9723"
+local_group="brm.svc"
+local_group_gid="9723"
+home_directory="/app/nexus"
+dns_subdomain="devops.moneris.com"
+ssl_cert_chain_file_name="devops.moneris.com-chain.crt"
+ssl_cert_key_file_name="devops.moneris.com.key"
+nexus_version="3.33.1-01"
+nexus_version_md5sum="9cc74b8d5dd240adf8df97bff263fbd9"
+nexus_admin_username="admin"
+nexus_admin_firstname="Administrator"
+nexus_admin_lastname="User"
+nexus_admin_email="DevOpsPlatformSupport@moneris.com"
+nexus_admin_email_subject_prefix="[PROD: Nexus RM]"
+nexus_ldap_config_name="MONAD-LDAP"
+nexus_ldap_config_protocol="LDAPS"
+nexus_ldap_config_host="monad.moneris.com"
+nexus_ldap_config_port="636"
+nexus_ldap_config_searchBase="dc=monad,dc=moneris,dc=com"
+nexus_ldap_config_authUsername="MONAD\\brm.bind"
+nexus_ldap_config_userLdapFilter="(|(memberOf=cn=BRM_Admins,ou=Application Support Groups,ou=Moneris System Accounts,dc=monad,dc=moneris,dc=com)(memberOf=cn=BRM_Users,ou=Application Support Groups,ou=Moneris System Accounts,dc=monad,dc=moneris,dc=com)(memberOf=cn=BRM_DevOps,ou=Application Support Groups,ou=Moneris System Accounts,dc=monad,dc=moneris,dc=com))"

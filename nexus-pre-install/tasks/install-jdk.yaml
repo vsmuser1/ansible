@@ -1,0 +1,4 @@
+- name: "Install the latest version of OpenJDK 1.8"
+  dnf:
+    name: "java-1.8.0-openjdk"
+    state: "latest"

@@ -1,0 +1,23 @@
+{
+  "name": "{{ item.name }}",
+  "online": true,
+  "storage": {
+    "blobStoreName": "{{ item.blobStore|default('default') }}",
+    "strictContentTypeValidation": true
+  },
+    "cleanup": {
+    "policyNames": [
+      "{{ item.policy|default('string') }}"
+    ]
+  },
+   "group": {
+    "memberNames": [
+      "{{ item.members|default('string') }}"
+    ],
+    "writableMember": "string"
+  },
+  "component": {
+    "proprietaryComponents": true
+  
+  }
+}

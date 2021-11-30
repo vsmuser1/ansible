@@ -1,0 +1,50 @@
+---
+
+- name: "Configure Nexus as a service"
+  include_tasks:
+    file: "config-nexus-service.yaml"
+    apply:
+      tags:
+        - "post-install"
+
+- name: "Configure Nexus {{ nexus_admin_username }} user"
+  include_tasks:
+    file: "config-admin-user.yaml"
+    apply:
+      tags:
+        - "post-install"
+
+- name: "Configure Nexus email settings"
+  include_tasks:
+    file: "config-email.yaml"
+    apply:
+      tags:
+        - "post-install"
+
+- name: "Configure LDAP"
+  include_tasks:
+    file: "config-ldap.yaml"
+    apply:
+      tags:
+        - "post-install"
+
+- name: "Configure Nexus blob stores"
+  include_tasks:
+    file: "config-blob-stores.yaml"
+    apply:
+      tags:
+        - "post-install"
+
+- name: "Configure Nexus realms"
+  include_tasks:
+    file: "config-realms.yaml"
+    apply:
+      tags:
+        - "post-install"
+
+- name: "Configure cron jobs"
+  include_tasks:
+    file: "config-crontab.yaml"
+    apply:
+      tags:
+        - "post-install"

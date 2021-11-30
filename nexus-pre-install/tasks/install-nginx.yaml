@@ -1,0 +1,25 @@
+- name: "Install the latest version of NGINX"
+  dnf:
+    name: "nginx"
+    state: "latest"
+
+- name: "Install NGINX configuration file: /etc/nginx/nginx.conf"
+  template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/nginx.conf"
+#    validate: "nginx -t"
+    group: "nginx"
+    owner: "nginx"
+    # mode: 0640
+    mode: "u=rw,g=r,o="
+
+- name: "Verify NGINX config"
+  command: "nginx -t"
+  changed_when: false
+
+- name: "Start NGINX service"
+  ansible.builtin.systemd:
+    name: "nginx"
+    state: "restarted"
+    daemon_reload: yes
+    enabled: yes

@@ -1,0 +1,5 @@
+---
+
+- name: check and crerate repos for dockerrepos
+  include: api.yml
+  with_items: "{{ repositories }}"

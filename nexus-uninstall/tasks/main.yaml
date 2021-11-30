@@ -1,0 +1,22 @@
+---
+
+- name: "Remove Nexus binaries"
+  include_tasks:
+    file: "remove-nexus-binaries.yaml"
+    apply:
+      tags:
+        - "uninstall"
+
+- name: "Uninstall Java Development Kit (OpenJDK)"
+  include_tasks:
+    file: "uninstall-jdk.yaml"
+    apply:
+      tags:
+        - "uninstall"
+
+- name: "Uninstall NGINX reverse proxy"
+  include_tasks:
+    file: "uninstall-nginx.yaml"
+    apply:
+      tags:
+        - "uninstall"

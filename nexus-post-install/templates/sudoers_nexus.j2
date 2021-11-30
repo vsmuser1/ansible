@@ -1,0 +1,6 @@
+Cmnd_Alias NEXUS = {{ home_directory }}/{{ application_name }}/bin/nexus *, /usr/bin/systemctl daemon-reload, /usr/bin/systemctl * {{ application_name }}, /usr/bin/systemctl * nginx, /usr/bin/journalctl *
+
+{{ local_account }}    ALL=(root)       NOPASSWD: NEXUS
+"{{ support_group }}"  ALL=(root)       NOPASSWD: NEXUS
+"{{ support_group }}"  ALL=({{ local_account }})  NOPASSWD: ALL
+"{{ support_group }}"  ALL=(nginx)      NOPASSWD: ALL

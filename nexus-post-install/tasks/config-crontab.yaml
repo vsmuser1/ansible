@@ -1,0 +1,6 @@
+- name: "Cron job to clean-up the database backup files older than 1 day"
+  ansible.builtin.cron:
+    name: "clean database backup files"
+    hour: 4
+    minute: 30
+    job: "/usr/bin/find {{ home_directory }}/sonatype-work/nexus3/backups/databases -name '*.bak' -mtime +0 -type f -delete"

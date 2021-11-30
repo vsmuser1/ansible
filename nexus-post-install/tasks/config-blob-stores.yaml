@@ -1,0 +1,27 @@
+- name: "Config Nexus blob store: releases"
+  uri:
+    method: "POST"
+    url: "https://artifacts.{{ dns_subdomain }}/service/rest/v1/blobstores/file"
+    user: "{{ nexus_admin_username }}"
+    password: "{{ nexus_admin_password }}"
+    force_basic_auth: yes
+    body_format: "json"
+    body:
+      name: "releases"
+      path: "releases"
+      softQuota: null
+    status_code: 204
+
+- name: "Config Nexus blob store: snapshots"
+  uri:
+    method: "POST"
+    url: "https://artifacts.{{ dns_subdomain }}/service/rest/v1/blobstores/file"
+    user: "{{ nexus_admin_username }}"
+    password: "{{ nexus_admin_password }}"
+    force_basic_auth: yes
+    body_format: "json"
+    body:
+      name: "snapshots"
+      path: "snapshots"
+      softQuota: null
+    status_code: 204

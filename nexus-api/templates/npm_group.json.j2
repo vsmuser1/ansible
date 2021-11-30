@@ -1,0 +1,14 @@
+{
+  "name": "{{ item.name }}",
+  "online": true,
+  "storage": {
+    "blobStoreName": "{{ item.blobStore|default('default') }}",
+    "strictContentTypeValidation": true
+  },
+  "group": {
+    "memberNames": [
+      "{{ item.policy|default('string') }}"
+    ],
+    "writableMember": "string"
+  }
+}

@@ -1,0 +1,36 @@
+---
+- name: get nexus docker repos
+  uri:
+    url: "{{ item.url }}/{{ item.name }}"
+    method: GET
+    user: "{{ nexus_username }}"
+    password: "{{ nexus_password }}"
+    headers:
+        Accept: application/json
+    force_basic_auth: "yes"
+    body_format: json
+  register: repo_output
+  ignore_errors: "yes"
+- debug:
+    msg: "{{ '{\"status\": \"NOTEXIST\"}' if (repo_output['json'] == 'Repository not found') else '{\"status\" : \"EXIST\"}' }}"
+- name: Set facts for repo_get_result
+  set_fact:
+    repo_get_result: "{{ '{\"status\": \"NOTEXIST\"}' if (repo_output['json'] == 'Repository not found') else '{\"status\" : \"EXIST\"}' }}"
+- name: create a template
+  template:
+    src: "{{ item.type }}.json.j2"
+    dest: "/tmp/{{ item.format }}_{{ item.type }}.json"
+- name: Create a repo
+  uri:
+    url: "{{ item.url }}"
+    method: POST
+    user: "{{ nexus_username }}"
+    password: "{{ nexus_password }}"
+    headers:
+        Content-Type: application/json
+        Accept: application/json
+    body: "{{ lookup('file','/tmp/{{ item.format }}_{{ item.type }}.json') }}"
+    force_basic_auth: yes
+    status_code: 201
+    body_format: json
+  when: repo_get_result.status == "NOTEXIST"

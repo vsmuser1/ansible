@@ -1,0 +1,41 @@
+- name: "Retrieve {{ nexus_admin_username }} user's temporary password"
+  slurp:
+    src: "{{ home_directory }}/sonatype-work/nexus3/{{ nexus_admin_username }}.password"
+  register: "nexus_admin_password_temp"
+
+- name: "Print {{ nexus_admin_username }} user's temporary password"
+  ansible.builtin.debug:
+    msg: "Temporary password: {{ nexus_admin_password_temp['content'] | b64decode }}"
+
+- name: "Change {{ nexus_admin_username }} user's password"
+  uri:
+    method: "PUT"
+    url: "https://artifacts.{{ dns_subdomain }}/service/rest/v1/security/users/{{ nexus_admin_username }}/change-password"
+    user: "{{ nexus_admin_username }}"
+    password: "{{ nexus_admin_password_temp['content'] | b64decode }}"
+    force_basic_auth: yes
+    body_format: "raw"
+    headers:
+      Content-Type: "text/plain"
+    body: "{{ nexus_admin_password }}"
+    status_code: 204
+
+- name: "Config {{ nexus_admin_username }} user"
+  uri:
+    method: "PUT"
+    url: "https://artifacts.{{ dns_subdomain }}/service/rest/v1/security/users/{{ nexus_admin_username }}"
+    user: "{{ nexus_admin_username }}"
+    password: "{{ nexus_admin_password }}"
+    force_basic_auth: yes
+    body_format: "json"
+    body:
+      userId: "{{ nexus_admin_username }}"
+      firstName: "{{ nexus_admin_firstname }}"
+      lastName: "{{ nexus_admin_lastname }}"
+      emailAddress: "{{ nexus_admin_email }}"
+      source: "default"
+      status: "active"
+      readOnly: false
+      roles:
+        - "nx-admin"
+    status_code: 204

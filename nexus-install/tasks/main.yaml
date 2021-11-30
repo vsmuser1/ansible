@@ -1,0 +1,8 @@
+---
+
+- name: "Install Nexus binaries"
+  include_tasks:
+    file: "install-nexus.yaml"
+    apply:
+      tags:
+        - "install"
