@@ -1,6 +1,6 @@
 ---
 nexus_username: admin
-Nexus_password: admin123
+nexus_password: admin123
 repositories:
 - url: https://artifacts.devops.moneris.com/service/rest/v1/repositories/docker/group
   name: docker-all
