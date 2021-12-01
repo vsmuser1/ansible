@@ -1,5 +1,5 @@
 ---
-- name: get nexus docker repos
+- name: get nexus repos
   uri:
     url: "{{ item.url }}/{{ item.name }}"
     method: GET
